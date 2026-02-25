@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    container_name: fastapi_app_tarea1
+    container_name: fastapi_app_proyecto
     ports:
       - "8000:8000"
     depends_on:
@@ -15,7 +15,7 @@ services:
 
   consumer:
     build: .
-    container_name: consumer_tarea1
+    container_name: consumer_proyecto
     command: python consumer.py
     depends_on:
       - mongodb
@@ -27,19 +27,19 @@ services:
 
   mongodb:
     image: mongo:latest
-    container_name: mongodb_tarea1
+    container_name: mongodb_proyecto
     ports:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password123
-      MONGO_INITDB_DATABASE: universidad
+      MONGO_INITDB_DATABASE: finanzas
     volumes:
       - mongo_data:/data/db
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq_tarea1
+    container_name: rabbitmq_proyecto
     ports:
       - "5672:5672"
       - "15672:15672"

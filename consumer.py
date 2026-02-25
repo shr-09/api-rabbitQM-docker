@@ -4,10 +4,10 @@ import time
 from pymongo import MongoClient
 
 mongo = MongoClient("mongodb://admin:password123@mongodb:27017/")
-db = mongo["universidad"]
-coleccion = db["estudiantes"]
+db = mongo["finanzas"]
+coleccion = db["gastos"]
 
-# Esperar hasta que Rabbit esté listo
+# Eesperar hasta que Rabbit esté listo
 while True:
     try:
         credentials = pika.PlainCredentials("admin", "password123")
@@ -23,7 +23,7 @@ while True:
         time.sleep(5)
 
 channel = connection.channel()
-channel.queue_declare(queue="estudiantes")
+channel.queue_declare(queue="gastos")
 
 def callback(ch, method, properties, body):
     data = json.loads(body)
@@ -31,7 +31,7 @@ def callback(ch, method, properties, body):
     coleccion.insert_one(data)
 
 channel.basic_consume(
-    queue="estudiantes",
+    queue="gastos",
     on_message_callback=callback,
     auto_ack=True
 )
