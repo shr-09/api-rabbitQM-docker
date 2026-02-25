@@ -1,0 +1,51 @@
+services:
+  app:
+    build: .
+    container_name: fastapi_app_tarea1
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    environment:
+      MONGO_URL: "mongodb://admin:password123@mongodb:27017/"
+      RABBITMQ_USER: "admin"
+      RABBITMQ_PASS: "password123"
+
+
+  consumer:
+    build: .
+    container_name: consumer_tarea1
+    command: python consumer.py
+    depends_on:
+      - mongodb
+      - rabbitmq
+    environment:
+      RABBITMQ_USER: admin
+      RABBITMQ_PASS: password123
+
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_tarea1
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: universidad
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_tarea1
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password123
+
+volumes:
+  mongo_data:
