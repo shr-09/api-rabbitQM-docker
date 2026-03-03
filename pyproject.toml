@@ -1,11 +1,10 @@
 [project]
-name = "tarea1"
+name = "api-rabbitQM-docker"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "bson>=0.5.10",
     "fastapi>=0.129.0",
     "mypy>=1.19.1",
     "pika>=1.3.2",
