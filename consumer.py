@@ -3,7 +3,8 @@ import json
 import time
 from pymongo import MongoClient
 
-mongo = MongoClient("mongodb://admin:password123@mongodb:27017/")
+# mongo: MongoClient = MongoClient("mongodb://admin:password123@mongodb:27017/") --> Asi lo quiere el mypy
+mongo = MongoClient("mongodb://admin:password123@mongodb:27017/")   # type: ignore
 db = mongo["finanzas"]
 coleccion = db["gastos"]
 
