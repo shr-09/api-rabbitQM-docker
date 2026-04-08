@@ -5,6 +5,9 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from datetime import date, datetime
 import os
+import boto3
+from botocore.exceptions import ClientError
+
 
 # api:
     # http://127.0.0.1:8000/docs
@@ -17,6 +20,8 @@ import os
     # http://localhost:8000/gastos
 
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://admin:password123@mongodb:27017/")
+
+# Conexión MongoDb
 # client: MongoClient = MongoClient("mongodb://localhost:27017") --> asi lo quiere el mypy
 client = MongoClient(MONGO_URL) # type: ignore 
 db = client["finanzas"]
