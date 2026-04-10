@@ -1,20 +1,26 @@
 import pika
 import json
 import time
+import os
 from pymongo import MongoClient
 
+MONGO_URL = os.getenv("MONGO_URL", "mongodb://admin:password123@mongodb:27017/")
+RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "rabbitmq")
+RABBITMQ_USER = os.getenv("RABBITMQ_USER", "admin")
+RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "password123")
+
 # mongo: MongoClient = MongoClient("mongodb://admin:password123@mongodb:27017/") --> Asi lo quiere el mypy
-mongo = MongoClient("mongodb://admin:password123@mongodb:27017/")   # type: ignore
+mongo = MongoClient(MONGO_URL)   # type: ignore
 db = mongo["finanzas"]
 coleccion = db["gastos"]
 
 # Eesperar hasta que Rabbit esté listo
 while True:
     try:
-        credentials = pika.PlainCredentials("admin", "password123")
+        credentials = pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASSWORD)
         connection = pika.BlockingConnection(
             pika.ConnectionParameters(
-                host="rabbitmq",
+                host=RABBITMQ_HOST,
                 credentials=credentials
             )
         )
