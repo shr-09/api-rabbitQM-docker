@@ -112,9 +112,10 @@ Esto levantará:
 
 ### 3. Verificar que todo esté funcionando
 
-- API: `http://localhost:8000`
+- API (FastAPI): `http://localhost:8000`
 - MongoDB: Puerto `27017`
 - RabbitMQ: `http://localhost:15672`
+- Consumer (Worker)
 
 ---
 
@@ -138,42 +139,81 @@ Success: no issues found
 
 ```
 .
-├── main.py
-├── consumer.py
-├── pyproject.toml
-├── Dockerfile
+├── api/
+│   ├── Dockerfile
+│   ├── main.py
+│   └── requirements.txt
+├── scripts/
+│   ├── install_api.sh
+│   ├── install_haproxy.sh
+│   ├── install_mongodb.sh
+│   ├── install_postgres.sh
+│   ├── install_rabbitmq.sh
+│   └── install_worker.sh
+├── terraform/
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── providers.tf
+│   ├── security_groups.tf
+│   └── variables.tf 
+├── worker/
+│   ├── consumer.py
+│   └── get_parameter.py
+├── .gitignore
 ├── docker-compose.yml
-└── README.md
+├── pyproject.toml
+├── README.md
+└── uv.lock
 ```
 
-### 🔎 ¿Qué hace cada archivo?
-
-**main.py**
+### ¿Qué hace cada archivo?
+ 
+**api/main.py**
 Contiene la definición de la API, endpoints GET, POST, PUT y DELETE, y conexión a MongoDB.
-
-**consumer.py**
+ 
+**api/Dockerfile**
+Define cómo se construye la imagen de la API.
+ 
+**worker/consumer.py**
 Consumidor de mensajes RabbitMQ. Procesa eventos y los almacena en MongoDB.
-
+ 
+**worker/get_parameter.py**
+Consulta parámetros del AWS Parameter Store (SSM).
+ 
+**scripts/**
+Scripts de instalación para cada EC2 en AWS (user data de Terraform).
+ 
+**terraform/**
+Infraestructura como código — define las EC2s, security groups y parámetros SSM.
+ 
+**docker-compose.yml**
+Orquesta los servicios localmente: API, consumer, MongoDB y RabbitMQ.
+ 
 **pyproject.toml**
 Define las dependencias del proyecto y la configuración de mypy.
-
-**Dockerfile**
-Define cómo se construye la imagen de la API.
-
-**docker-compose.yml**
-Orquesta los servicios: API, MongoDB y RabbitMQ.
-
+ 
 ---
 
-## Variables de entorno
-
+Crea un archivo `.env` en la raíz con:
+ 
 ```env
 MONGO_URL=mongodb://admin:password123@mongodb:27017/
+MONGO_INITDB_ROOT_USERNAME=admin
+MONGO_INITDB_ROOT_PASSWORD=password123
+MONGO_INITDB_DATABASE=finanzas
+RABBITMQ_HOST=rabbitmq
+RABBITMQ_USER=admin
+RABBITMQ_PASSWORD=password123
+AWS_ACCESS_KEY_ID=your_key
+AWS_SECRET_ACCESS_KEY=your_secret
+AWS_SESSION_TOKEN=your_token
+AWS_DEFAULT_REGION=us-east-1
+SSM_RABBITMQ_PARAM=/message-queue/dev/rabbitmq/public_ip
 ```
 
 ---
 
-## Autor
+## Autores
 
 - Santiago Henao Ramirez (git hub: shr-09)
 - Juan Fernando Muñoz Lopez (git hub: juanferm0410)
