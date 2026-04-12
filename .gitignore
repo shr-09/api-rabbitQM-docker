@@ -25,3 +25,4 @@ __pycache__/
 *.tfplan
 *.tfstate
 *.tfstate.backup
+terraform.tfvars
