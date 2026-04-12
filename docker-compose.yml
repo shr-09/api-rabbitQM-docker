@@ -1,6 +1,8 @@
 services:
   app:
-    build: .
+    build:
+        context: .
+        dockerfile: api/Dockerfile
     container_name: fastapi_app_proyecto
     ports:
       - "8000:8000"
@@ -19,9 +21,11 @@ services:
       SSM_RABBITMQ_PARAM: ${SSM_RABBITMQ_PARAM}
 
   consumer:
-    build: .
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    command: python worker/consumer.py
     container_name: consumer_proyecto
-    command: python consumer.py
     depends_on:
       - mongodb
       - rabbitmq
