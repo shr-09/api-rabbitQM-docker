@@ -135,6 +135,66 @@ Success: no issues found
 
 ---
 
+## Despliegue en AWS con Terraform / OpenTofu
+ 
+### 1. Obtener VPC, subnets y AZ
+```bash
+aws ec2 describe-subnets --query "Subnets[*].[SubnetId, VpcId, AvailabilityZone]" --output text
+```
+ 
+### 2. Actualizar variables en terraform/variables.tf
+- `vpc_id` y `subnet_id` con los valores del paso anterior
+- `key_name` con el nombre de tu key pair en AWS
+ 
+### 3. Inicializar y desplegar
+ 
+**Con Terraform:**
+```bash
+terraform init
+terraform plan -out=project.tfplan
+terraform apply project.tfplan
+terraform destroy
+```
+ 
+**Con OpenTofu:**
+```bash
+tofu init
+tofu plan -out=project.tfplan
+tofu apply project.tfplan
+tofu destroy
+```
+ 
+### 4. Borrar todo
+```bash
+rm -rf .terraform .terraform.lock.hcl project.tfplan terraform.tfstate terraform.tfstate.backup
+```
+ 
+### 5. Aplicar un solo recurso
+```bash
+tofu apply -target=aws_instance.rabbitmq
+tofu apply -target=aws_instance.api_server
+tofu apply -target=aws_security_group.worker_sg
+tofu apply -target=aws_ssm_parameter.worker_ip
+```
+ 
+### 6. 
+# Ver solo el plan para un recurso individual
+```bash
+tofu plan -target=aws_instance.rabbitmq
+```
+
+# Aplicar solo a ese recurso
+```bash
+tofu apply -target=aws_instance.rabbitmq
+```
+ 
+### 7. Verificar que todo funcione
+- RabbitMQ: `http://[IP_RABBITMQ]:15672`
+- Balancer: `http://[IP_BALANCER]/health`
+- MongoDB: conectar con tu gestor de base de datos preferido en el puerto `27017`
+ 
+---
+
 ## Estructura del proyecto
 
 ```
