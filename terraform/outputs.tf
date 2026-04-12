@@ -23,11 +23,6 @@ output "worker_public_ip" {
   description = "IP pública del servidor Worker"
 }
 
-output "postgres_public_ip" {
-  value = aws_instance.postgres.public_ip
-  description = "IP pública del servidor PostgreSQL"
-}
-
 output "mongodb_public_ip" {
   value = aws_instance.mongodb.public_ip
   description = "IP pública del servidor MongoDB"

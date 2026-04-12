@@ -71,22 +71,7 @@ resource "aws_instance" "worker" {
   }
 }
 
-# 4. PostgreSQL EC2
-resource "aws_instance" "postgres" {
-  ami               = var.ami_id
-  instance_type     = var.instance_type
-  key_name          = var.key_name
-  subnet_id         = var.subnet_id
-  vpc_security_group_ids = [aws_security_group.postgres_sg.id]
-  user_data         = file("${path.module}/../scripts/install_postgres.sh")
-
-  tags = {
-    Name    = "Postgres-Server"
-    Role    = "Database"
-  }
-}
-
-# 5. MongoDB EC2
+# 4. MongoDB EC2
 resource "aws_instance" "mongodb" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
