@@ -136,20 +136,23 @@ Success: no issues found
 ---
 
 ## Despliegue en AWS con Terraform / OpenTofu
+Cada vez que abres el lab de AWS las credenciales cambian y las EC2s anteriores ya no existen.
  
 ### 1. Obtener VPC, subnets y AZ
 ```bash
 aws ec2 describe-subnets --query "Subnets[*].[SubnetId, VpcId, AvailabilityZone]" --output text
 ```
  
-### 2. Actualizar variables en terraform/variables.tf
+### 3. Actualizar terraform/variables.tf
 - `vpc_id` y `subnet_id` con los valores del paso anterior
-- `key_name` con el nombre de tu key pair en AWS
+- `subnet_id_2` debe ser de una AZ distinta a `subnet_id`
+- `key_name` con el nombre exacto de tu key pair en AWS
  
 ### 3. Inicializar y desplegar
  
 **Con Terraform:**
 ```bash
+cd terraform
 terraform init
 terraform plan -out=project.tfplan
 terraform apply project.tfplan
@@ -189,9 +192,10 @@ tofu apply -target=aws_instance.rabbitmq
 ```
  
 ### 7. Verificar que todo funcione
-- RabbitMQ: `http://[IP_RABBITMQ]:15672`
-- Balancer: `http://[IP_BALANCER]/health`
-- MongoDB: conectar con tu gestor de base de datos preferido en el puerto `27017`
+- HAProxy / API health check: `http://[IP_HAPROXY]/health`
+- Swagger UI (interfaz gráfica): `http://[IP_HAPROXY]/docs`
+- RabbitMQ UI: `http://[IP_RABBITMQ]:15672`
+- MongoDB: conectar con tu gestor preferido en el puerto `27017`
  
 ---
 
