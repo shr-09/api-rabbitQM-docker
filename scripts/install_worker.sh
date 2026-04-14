@@ -101,7 +101,9 @@ EOF
 chown -R ec2-user:ec2-user /home/ec2-user/worker
  
 # Ejecutar el consumer con las IPs inyectadas por Terraform
-MONGO_URL="mongodb://admin:password123@${mongodb_ip}:27017/" \
+MONGO_URL="mongodb://admin:password123@${mongodb_ip}:27017/finanzas?authSource=admin" \
 RABBITMQ_HOST="${rabbitmq_ip}" \
 nohup python3 /home/ec2-user/worker/consumer.py > /var/log/consumer.log 2>&1 &
+ 
+echo "Worker iniciado. Logs en /var/log/consumer.log"
  
