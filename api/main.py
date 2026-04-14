@@ -50,6 +50,9 @@ def convertir_fecha_gasto(gasto: Gasto):
     data["fecha"] = datetime.combine(data["fecha"], datetime.min.time())
     return data
 
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
 
 # Obtener todos los gastos
 @app.get("/gastos")
