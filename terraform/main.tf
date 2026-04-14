@@ -24,6 +24,7 @@ resource "aws_instance" "api_server" {
 
   user_data = templatefile("${path.module}/../scripts/install_api.sh", {
     mongodb_ip = aws_instance.mongodb.private_ip
+    rabbitmq_ip = aws_instance.rabbitmq.private_ip
   })
 
   tags = {
