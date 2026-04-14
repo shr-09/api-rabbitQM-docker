@@ -195,7 +195,7 @@ tofu apply -target=aws_instance.rabbitmq
 - HAProxy / API health check: `http://[IP_HAPROXY]/health`
 - Swagger UI (interfaz gráfica): `http://[IP_HAPROXY]/docs`
 - RabbitMQ UI: `http://[IP_RABBITMQ]:15672`
-- MongoDB: conectar con tu gestor preferido en el puerto `27017`
+- MongoDB: agrega una nueva conection en MongoDB Compass. la URL pegar esto: `mongodb://admin:TU_PASSWORD@[IP_MONGO]:27017`
  
 ---
 
