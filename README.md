@@ -268,10 +268,6 @@ MONGO_INITDB_DATABASE=finanzas
 RABBITMQ_HOST=rabbitmq
 RABBITMQ_USER=admin
 RABBITMQ_PASSWORD=password123
-AWS_ACCESS_KEY_ID=your_key
-AWS_SECRET_ACCESS_KEY=your_secret
-AWS_SESSION_TOKEN=your_token
-AWS_DEFAULT_REGION=us-east-1
 SSM_RABBITMQ_PARAM=/message-queue/dev/rabbitmq/public_ip
 ```
 
