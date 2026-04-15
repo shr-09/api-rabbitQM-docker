@@ -12,7 +12,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 # Habilitar y arrancar Docker
 sudo systemctl enable docker
 sudo systemctl start docker
-sleep 10
+
+# Añadir al usuario ec2-user al grupo docker
 sudo usermod -aG docker ec2-user
 
 # --- Despliegue de la API FastAPI ---
@@ -21,7 +22,6 @@ cd /home/ec2-user/api
 
 # NOTA: se usan comillas dobles en <<EOF para que ${mongodb_ip} y ${rabbitmq_ip}
 # sean expandidas por Terraform/bash al momento de generar el script.
-# El código Python no tiene variables de shell, así que no hay conflicto.
 cat <<'PYEOF' > main.py
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -139,8 +139,6 @@ COPY . .
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 EOF
-
-chown -R ec2-user:ec2-user /home/ec2-user/api
 
 # Construir imagen y levantar contenedor con las IPs de Terraform
 sudo docker build -t simple-api .

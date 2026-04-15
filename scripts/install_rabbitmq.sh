@@ -29,8 +29,8 @@ services:
     container_name: rabbitmq_server
     restart: always
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5672:5672" # RabbitMQ port
+      - "15672:15672" # Management UI port
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: password123
